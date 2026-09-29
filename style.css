@@ -1,0 +1,249 @@
+body {
+  font-family: Gill Sans, sans-serif;
+  color: black;
+  background: pink;
+  margin: 0;
+  padding: 20px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+button {
+  cursor: url(HelpSelect.cur), pointer;
+  font-family: inherit;
+}
+
+input {
+  font-family: inherit;
+}
+
+/* Шапка */
+#header {
+  font-family: Gill Sans, sans-serif;
+  color: black;
+  font-size: 16px;
+  background: rgb(243, 239, 202);
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+#header h1 {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+}
+
+#header .label {
+  padding: 2px 8px 2px 0px;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  margin: 4px 0;
+}
+
+/* Основной каркас */
+.page > tbody > tr > td {
+  vertical-align: top;
+  padding: 16px;
+}
+
+.page {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+/* Ячейки */
+#canvas_cell {
+  width: 500px;
+  background: #FF1493;
+  border: 3px solid black;
+  border-radius: 8px;
+}
+
+#form_cell {
+  background: white;
+  border: 3px solid black;
+  border-radius: 8px;
+  vertical-align: top;
+}
+
+#result_cell {
+  background: rgb(243, 239, 202);
+  border: 3px solid black;
+  border-radius: 8px;
+}
+
+/* Canvas */
+canvas#plane {
+  background-image: url('ХеллоуКитти.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 3px solid black;
+  border-radius: 8px;
+}
+
+.hint {
+  color: black;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Форма */
+.form_table {
+  padding: 8px 6px;
+  vertical-align: middle;
+}
+
+.form_table input[type="text"] {
+  padding: 8px 10px;
+  margin: 0;
+  background: pink;
+  border: 3px solid black;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100px; 
+}
+
+.form_table input[type="text"]:focus {
+  outline: none;
+  border-color: #FF1493;
+  box-shadow: 0 0 0 2px rgba(202, 86, 150, 0.2);
+}
+
+.form_table input.invalid {
+  border-color: red;
+  background: white;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  min-height: 16px;
+}
+
+.form_table td:first-child {
+  text-align: right;
+  padding-right: 12px;
+}
+
+/* Кнопки Y и чекбоксы R */
+.toggle_group, .checkbox_group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.toggle_group > button {
+  padding: 6px 10px;
+  margin: 0;
+  border: 3px solid black;
+  border-radius: 8px;
+  background: pink;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.toggle_group > button:hover {
+  border-color: #FF1493;
+}
+
+.toggle_group > button.active {
+  background: #FF1493; 
+  border-color: black;
+  color: white;
+}
+
+.checkbox_group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; 
+  padding: 6px 10px;
+  border: 3px solid black;
+  border-radius: 8px;
+  font-size: 13px;
+  background: pink;
+  transition: background 0.2s;
+}
+
+.checkbox_group label:has(input:checked) {
+  background: #FF1493; 
+  color: white;
+  border-color: black;
+}
+
+.submit_cell {
+  padding-top: 12px;
+}
+
+/* --- Кнопки --- */
+#submit_btn {
+  padding: 10px 18px;
+  background: #FF1493;
+  color: black;
+  border: 3px solid black;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#submit_btn:hover {
+  background: #FF1493;
+}
+
+#clear_btn {
+  padding: 10px 14px;
+  background: pink;
+  color: black;
+  border: 3px solid black;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+#clear_btn:hover {
+  background: #FF1493;
+}
+
+/* Таблица результатов */
+#result_table {
+  width: 100%;
+  border: 3px solid black;
+  border-radius: 8px;
+}
+
+#result_table th, #result_table td {
+  border: 1px solid black;
+  padding: 8px 10px;
+  font-size: 13px;
+  text-align: center;
+}
+
+#result_table th {
+  background: #FF1493; 
+  color: black;
+  border-bottom: 3px solid black;
+}
+
+#result_table tbody tr:nth-child(even) {
+  background: white; 
+}
+
+#result_table tbody tr:nth-child(odd) {
+  background: #eef1f4;
+}
+
+#result_table td.hit {
+  color: #1a7f37;
+  font-weight: bold;
+}
+
+#result_table td.miss {
+  color: red;
+  font-weight: bold;
+}

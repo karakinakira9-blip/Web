@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <meta charset="utf-8" />
+
+        <title>Лабораторная работа №1</title>
+        <meta name="description" content="Определяет попадание точки на координатной плоскости в заданную область">
+        <meta name="author" content="Карякина Кира">
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+    <table class="page" id="pageTable">
+      <tbody>
+<!-- Шапка страницы -->  
+        <tr>
+          <td colspan="2" id="header">
+            <h1>Лабораторная работа №1</h1>
+            <p class="label">ФИО: Карякина Кира Константиновна</p>
+            <p class="label">Группа: Р3207</p>
+            <p class="label">Вариант: 12618</p>
+          </td>
+        </tr>
+<!-- Основной блок: слева координатная плоскость, справа форма -->
+        <tr>
+          <td id="canvas_cell">
+            <canvas id="plane" width="500" height="500"></canvas>
+            <p class="hint">Зеленая точка — попадает в область, красная — не попадает</p>
+          </td>
+
+          <td id="form_cell">
+            <form id="point_form" novalidate>
+              <table class="form_table">
+                <tbody>
+                  <tr>
+
+                    <td><label for="x_input">X&nbsp;(&minus;3&nbsp;...&nbsp;5):</label></td>
+                    <td>
+                      <input type="text" id="x_input" name="x" placeholder="например, 1.5" autocomplete="off">
+                      <div class="error" id="x_error"></div>
+                    </td>
+
+                  </tr>
+                  <tr>
+
+                    <td>Y&nbsp;(&minus;3&nbsp;...&nbsp;5):</td>
+                    <td>
+                      <div class="toggle_group" id="y_group" role="group" aria-label="Выбор Y"></div>
+                      <input type="hidden" id="y_input" name="y">
+                      <div class="error" id="y_error"></div>
+                    </td>
+
+                  </tr>
+                  <tr>
+
+                    <td>R:</td>
+                    <td>
+                      <div class="checkbox_group" id="r_group" role="group" aria-label="Выбор R"></div>
+                      <div class="error" id="r_error"></div>
+                    </td>
+
+                  </tr>
+                  <tr>
+
+                    <td colspan="2" class="submit_cell">
+                      <button type="submit" id="submit_btn">Проверить совпадения</button>
+                      <button type="button" id="clear_btn">Очистить историю</button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+          </td>
+        </tr> 
+<!-- Таблица результатов -->        
+        <tr>
+          <td colspan="2" id="result_cell">
+            <h2>Результат проверки</h2>
+            <table id="result_table">
+              <thead>
+                <tr>
+
+                  <th>№</th>
+                  <th>X</th>
+                  <th>Y</th>
+                  <th>R</th>
+                  <th>Результат</th>
+                  <th>Дата и время</th>
+
+                </tr>
+              </thead>
+
+              <tbody id="result_body">
+              </tbody>
+
+            </table>
+            <p class="hint" id="empty_hint">Пока нет результатов</p>
+
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <script src="script.js"></script>
+    </body>
+
+</html>
