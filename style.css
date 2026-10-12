@@ -1,5 +1,5 @@
 body {
-  font-family: Gill Sans, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: black;
   background: pink;
   margin: 0;
@@ -21,7 +21,7 @@ input {
 
 /* Шапка */
 #header {
-  font-family: Gill Sans, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: black;
   font-size: 16px;
   background: rgb(243, 239, 202);
@@ -35,12 +35,19 @@ input {
   font-size: 22px;
 }
 
-#header .label {
-  padding: 2px 8px 2px 0px;
+/* Табличка с ФИО/группой/вариантом внутри шапки */
+.header_info {
+  margin-top: 6px;
+}
+
+.header_info td {
+  padding: 2px 8px 2px 0;
   font-size: 14px;
+}
+
+.header_info td.label {
   font-weight: bold;
   color: black;
-  margin: 4px 0;
 }
 
 /* Основной каркас */
@@ -124,11 +131,6 @@ canvas#plane {
   color: red;
   font-size: 12px;
   min-height: 16px;
-}
-
-.form_table td:first-child {
-  text-align: right;
-  padding-right: 12px;
 }
 
 /* Кнопки Y и чекбоксы R */
@@ -235,7 +237,7 @@ canvas#plane {
 }
 
 #result_table tbody tr:nth-child(odd) {
-  background: #eef1f4;
+  background: rgba(201, 201, 201, 0.621);
 }
 
 #result_table td.hit {

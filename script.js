@@ -74,9 +74,9 @@ Y_VALUES.forEach((value) => {
   yGroup.appendChild(btn);
 });
 
-/* Чекбокс R */
+/* Чекбоксы R */
 const rGroup = document.getElementById("r_group");
-let selectedR = null;
+let selectedRs = [];
 
 R_VALUES.forEach((value) => {
   const label = document.createElement("label");
@@ -87,16 +87,14 @@ R_VALUES.forEach((value) => {
   span.textContent = "R = " + value;
 
   checkbox.addEventListener("change", () => {
+    const index = selectedRs.indexOf(value);
     if (checkbox.checked) {
-      selectedR = value;
-      rGroup.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
-        if (cb !== checkbox) cb.checked = false;
-      });
-      document.getElementById("r_error").textContent = "";
-      drawScene(selectedR, lastPoints);
+      if (index === -1) selectedRs.push(value);
     } else {
-      selectedR = null;
+      if (index !== -1) selectedRs.splice(index, 1);
     }
+    document.getElementById("r_error").textContent = "";
+    drawScene(selectedRs, lastPoints);
   });
 
   label.appendChild(checkbox);
@@ -117,7 +115,7 @@ function parseX(rawValue) {
   if (value < X_MIN || value > X_MAX) {
     return { ok: false, message: `Значение должно быть в диапазоне от ${X_MIN} до ${X_MAX}` };
   }
-  return { ok: true, value };
+  return { ok: true, value, raw: normalized };
 }
 
 xInput.addEventListener("input", () => {
@@ -156,11 +154,16 @@ function toPy(y) {
 
 let lastPoints = [];
 
-function drawScene(r, points) {
+function drawScene(rs, points) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrid();
-  drawRegion(r);
-  drawAxes(r);
+
+  const rList = (rs && rs.length) ? rs : [];
+  rList.forEach(r => drawRegion(r));
+
+  const axisR = rList.length ? Math.max(...rList) : R_VALUES[0];
+  drawAxes(axisR);
+
   if (points && points.length) {
     points.forEach(p => drawPoint(p.x, p.y, p.hit));
   }
@@ -276,7 +279,7 @@ function drawAxes(r) {
 function drawPoint(x, y, hit) {
   ctx.beginPath();
   ctx.arc(toPx(x), toPy(y), 6, 0, Math.PI * 2);
-  ctx.fillStyle = hit ? "#1a7f37" : "#c0392b"; 
+  ctx.fillStyle = hit ? "#1a7f37" : "#c0392b";
   ctx.fill();
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 2;
@@ -296,7 +299,7 @@ function renderResults() {
 
     const cells = [
       index + 1,
-      rec.x,
+      rec.xDisplay !== undefined ? rec.xDisplay : rec.x,
       rec.y,
       rec.r,
       rec.hit ? "Попадает" : "Не попадает",
@@ -333,29 +336,35 @@ form.addEventListener("submit", (event) => {
     valid = false;
   }
 
-  if (selectedR === null) {
-    document.getElementById("r_error").textContent = "Выберите значение R";
+  if (selectedRs.length === 0) {
+    document.getElementById("r_error").textContent = "Выберите хотя бы одно значение R";
     valid = false;
   }
 
   if (!valid) return;
 
   const x = xResult.value;
-  const r = selectedR;
-  const newPoints = [];
+  const xDisplay = xResult.raw;
 
-  selectedYs.forEach(y => {
-    const hit = isInside(x, y, r);
-    const record = { x, y, r, hit, ts: Date.now() };
-    records.push(record);
-    newPoints.push({ x, y, hit });
+  selectedRs.forEach(r => {
+    selectedYs.forEach(y => {
+      const hit = isInside(x, y, r);
+      const record = { x, xDisplay, y, r, hit, ts: Date.now() };
+      records.push(record);
+    });
   });
+
+  const newPoints = selectedYs.map(y => ({
+    x,
+    y,
+    hit: selectedRs.some(r => isInside(x, y, r)),
+  }));
 
   saveRecords(records);
   renderResults();
 
   lastPoints = newPoints;
-  drawScene(r, lastPoints);
+  drawScene(selectedRs, lastPoints);
 });
 
 /* Очистка истории */
@@ -364,9 +373,9 @@ document.getElementById("clear_btn").addEventListener("click", () => {
   saveRecords(records);
   renderResults();
   lastPoints = [];
-  if (selectedR !== null) drawScene(selectedR, null);
+  drawScene(selectedRs, null);
 });
 
 /* Инициализация */
 renderResults();
-drawScene(R_VALUES[0], null);
+drawScene(selectedRs, null);
