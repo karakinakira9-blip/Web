@@ -7,15 +7,47 @@ const X_MAX = 5;
 const STORAGE_KEY = "lab12618_records";
 
 /* Попадание */
-function isInside(x, y, r) {
-  if (x <= 0 && y >= 0) {
-    return x * x + y * y <= r * r;
+function fracLen(s) {
+  const i = String(s).indexOf(".");
+  return i === -1 ? 0 : String(s).length - i - 1;
+}
+
+function toScaled(str, precision) {
+  const m = String(str).trim().replace(",", ".")
+    .match(/^(-?)(\d+)(?:\.(\d+))?$/);
+  if (!m) return null;
+  const sign = m[1] === "-" ? -1n : 1n;
+  const frac = (m[3] || "").padEnd(precision, "0").slice(0, precision);
+  return sign * BigInt(m[2] + frac);
+}
+
+function isInside(xRaw, yNum, rNum) {
+  const xStr = String(xRaw);
+  const yStr = String(yNum);
+  const rStr = String(rNum);
+
+  // Точность
+  const D = Math.max(30,
+    fracLen(xStr) + 10,
+    fracLen(yStr) + 10,
+    fracLen(rStr) + 10);
+
+  const xs = toScaled(xStr, D);
+  const ys = toScaled(yStr, D);
+  const rs = toScaled(rStr, D);
+  if (xs === null || ys === null || rs === null) return false;
+
+  // II четверть: x² + y² <= r²
+  if (xs <= 0n && ys >= 0n) {
+    return xs * xs + ys * ys <= rs * rs;
   }
-  if (x <= 0 && y <= 0) {
-    return x >= -r && y >= -r;
+  // III четверть: квадрат
+  if (xs <= 0n && ys <= 0n) {
+    return xs >= -rs && ys >= -rs;
   }
-  if (x >= 0 && y >= 0) {
-    return x + y <= r / 2;
+  // I четверть: x + y <= r/2, то есть 2x + 2y <= r
+  if (xs >= 0n && ys >= 0n) {
+    return 2n * (xs + ys) <= rs;
   }
   return false;
 }
@@ -348,17 +380,13 @@ form.addEventListener("submit", (event) => {
 
   selectedRs.forEach(r => {
     selectedYs.forEach(y => {
-      const hit = isInside(x, y, r);
+      const hit = isInside(xDisplay, y, r);
       const record = { x, xDisplay, y, r, hit, ts: Date.now() };
       records.push(record);
     });
-  });
+  }); 
 
-  const newPoints = selectedYs.map(y => ({
-    x,
-    y,
-    hit: selectedRs.some(r => isInside(x, y, r)),
-  }));
+  const newPoints = selectedYs.map(y => ({x, y, hit: selectedRs.some(r => isInside(xDisplay, y, r))}));
 
   saveRecords(records);
   renderResults();
